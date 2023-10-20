@@ -26,6 +26,7 @@ async function run() {
     await client.connect();
 
     const productCollection = client.db("techDB").collection("techProduct");
+    const productCartCollection = client.db("techDB").collection("techCart");
 
     app.get("/products", async (req, res) => {
       const cursor = productCollection.find();
@@ -51,6 +52,12 @@ async function run() {
       const newAdded = req.body;
       console.log(newAdded);
       const result = await productCollection.insertOne(newAdded);
+      res.send(result);
+    });
+    app.post("/product", async (req, res) => {
+      const newAdded = req.body;
+      console.log(newAdded);
+      const result = await productCartCollection.insertOne(newAdded);
       res.send(result);
     });
 
