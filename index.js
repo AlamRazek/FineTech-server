@@ -54,7 +54,18 @@ async function run() {
       const result = await productCollection.insertOne(newAdded);
       res.send(result);
     });
-    app.post("/product", async (req, res) => {
+
+    // get cart data
+    app.get("/cart/:userEmail", async (req, res) => {
+      const cursor = productCartCollection.find({
+        userEmail: req.params.userEmail,
+      });
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
+    // addCart product
+    app.post("/cart", async (req, res) => {
       const newAdded = req.body;
       console.log(newAdded);
       const result = await productCartCollection.insertOne(newAdded);
