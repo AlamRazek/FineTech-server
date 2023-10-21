@@ -33,6 +33,11 @@ async function run() {
       const result = await cursor.toArray();
       res.send(result);
     });
+
+    // app.get('/coffee/:id', async(req,res)=> {
+    //     const
+    // })
+
     app.get("/products/:brandName", async (req, res) => {
       const cursor = productCollection.find({
         brandName: req.params.brandName,
@@ -45,6 +50,32 @@ async function run() {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await productCollection.findOne(query);
+      res.send(result);
+    });
+    // app.get("/products/:id", async (req, res) => {
+    //   const id = req.params.id;
+    //   const query = { _id: new ObjectId(id) };
+    //   const result = await productCollection.findOne(query);
+    //   res.send(result);
+    // });
+
+    app.put("/products/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      const option = { upsert: true };
+      const updateProduct = req.body;
+      const product = {
+        $set: {
+          name: updateProduct.name,
+          image: updateProduct.image,
+          brandName: updateProduct.brandName,
+          radio: updateProduct.radio,
+          price: updateProduct.price,
+          shortDescription: updateProduct.shortDescription,
+          rating: updateProduct.rating,
+        },
+      };
+      const result = await productCollection.updateOne(filter, product, option);
       res.send(result);
     });
 
